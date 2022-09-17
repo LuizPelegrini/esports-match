@@ -1,40 +1,47 @@
+import { useEffect, useState } from 'react';
 import { View, Image, FlatList } from 'react-native';
 import { styles } from './styles';
 
 import logoImg from '../../assets/logo-nlw-esports.png';
 import { Heading } from '../../components/Heading';
-import { GamingCard } from '../../components/GamingCard';
-import { GAMES } from '../../utils/games';
+import { GamingCard, GamingCardProps } from '../../components/GamingCard';
 
 export function Home(){
-    return (
-        <View style={styles.container}>
-            <Image 
-                source={logoImg}
-                style={styles.logo}
-            />
+  const [games, setGames] = useState<GamingCardProps[]>([]);
 
-            <Heading 
-                title='Find your duo!'
-                subtitle='Select the game you want to play...'
-            />
+  useEffect(() => {
+    fetch('http://192.168.101.3:3333/games')
+      .then(response => response.json())
+      .then(data => setGames(data))
+  }, []);
 
-            <FlatList
-                contentContainerStyle={styles.contentList}
-                data={GAMES}
-                keyExtractor={item => item.id} 
-                horizontal
-                showsHorizontalScrollIndicator={false}
-                renderItem={({ item }) => 
-                    <GamingCard 
-                        id={item.id}
-                        name={item.name}
-                        cover={item.cover}
-                        ads={item.ads}
-                    />
-                }
-            />
-           
-        </View>
-    );
+  return (
+    <View style={styles.container}>
+      <Image 
+        source={logoImg}
+        style={styles.logo}
+      />
+
+      <Heading 
+        title='Find your duo!'
+        subtitle='Select the game you want to play...'
+      />
+
+      <FlatList
+        contentContainerStyle={styles.contentList}
+        data={games}
+        keyExtractor={game => game.id} 
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        renderItem={({ item }) => 
+          <GamingCard 
+            id={item.id}
+            title={item.title}
+            bannerUrl={item.bannerUrl}
+            _count={item._count}
+          />
+        }
+    />
+    </View>
+  );
 }
