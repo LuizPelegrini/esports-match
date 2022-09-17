@@ -1,5 +1,5 @@
 import { Background } from './src/components/Background';
-import { Home } from './src/screens/Home';
+import { Routes } from './src/routes';
 import { Loading } from './src/components/Loading';
 import { StatusBar } from 'react-native';
 import { 
@@ -24,7 +24,7 @@ export default function App() {
         barStyle='light-content' 
         backgroundColor='transparent'
         translucent />
-      { fontsLoaded ? <Home /> : <Loading /> }
+      { fontsLoaded ? <Routes /> : <Loading /> }
     </Background>
   );
 }
