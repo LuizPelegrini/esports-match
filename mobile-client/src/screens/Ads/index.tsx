@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import { Image, TouchableOpacity, View, FlatList } from 'react-native';
+import { Image, TouchableOpacity, View, FlatList, Text } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import { Entypo } from '@expo/vector-icons';
@@ -48,8 +48,8 @@ export function Ads() {
         <Heading title={params.title} subtitle="Connect and start playing!"/>
 
         <FlatList
-          style={styles.containerList}
-          contentContainerStyle={styles.contentList}
+          style={[styles.containerList, { }]}
+          contentContainerStyle={ads.length > 0 ? styles.contentList : styles.emptyContentList}
           data={ads}
           keyExtractor={ad => ad.id} 
           horizontal
@@ -60,6 +60,11 @@ export function Ads() {
               data={item}
               onConnect={() => {}}
             />
+          }
+          ListEmptyComponent={() => 
+            <Text style={styles.emptyListText}>
+              No published ads for this game
+            </Text>
           }
         />
       </SafeAreaView>
