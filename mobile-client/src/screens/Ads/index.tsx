@@ -13,10 +13,13 @@ import logoImg from '../../assets/logo-nlw-esports.png';
 import { Background } from '../../components/Background';
 import { Heading } from '../../components/Heading';
 import { DuoCard, Ad } from '../../components/DuoCard';
+import { DuoMatch } from '../../components/DuoMatch'; 
 
 export function Ads() {
   const [ads, setAds] = useState<Ad[]>([]);
+  const [discordDuoSelected, setDiscordDuoSelected] = useState('123');
 
+  // get route params
   const route = useRoute();
   const params = route.params as AdsParams;
 
@@ -66,6 +69,12 @@ export function Ads() {
               No published ads for this game
             </Text>
           }
+        />
+
+        <DuoMatch
+          visible={discordDuoSelected.length > 0}
+          discord="hello#123"
+          onClose={() => setDiscordDuoSelected('')}
         />
       </SafeAreaView>
     </Background>
