@@ -17,7 +17,7 @@ import { DuoMatch } from '../../components/DuoMatch';
 
 export function Ads() {
   const [ads, setAds] = useState<Ad[]>([]);
-  const [discordDuoSelected, setDiscordDuoSelected] = useState('123');
+  const [discordDuoSelected, setDiscordDuoSelected] = useState('');
 
   // get route params
   const route = useRoute();
@@ -33,6 +33,14 @@ export function Ads() {
 
   function handleGoBack() {
     navigation.goBack()
+  }
+
+  async function getDiscordUser(adsId: string) {
+    fetch(`http://192.168.101.3:3333/ads/${adsId}/discord`)
+      .then(response => response.json())
+      .then(data => {
+        setDiscordDuoSelected(data.discord)
+      });
   }
 
   return (
@@ -61,7 +69,7 @@ export function Ads() {
             <DuoCard
               key={item.id}
               data={item}
-              onConnect={() => {}}
+              onConnect={() => getDiscordUser(item.id)}
             />
           }
           ListEmptyComponent={() => 
@@ -73,7 +81,7 @@ export function Ads() {
 
         <DuoMatch
           visible={discordDuoSelected.length > 0}
-          discord="hello#123"
+          discord={discordDuoSelected}
           onClose={() => setDiscordDuoSelected('')}
         />
       </SafeAreaView>
