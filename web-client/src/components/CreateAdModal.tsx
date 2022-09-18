@@ -1,9 +1,18 @@
-import { GameController } from 'phosphor-react';
+import { Check, GameController } from 'phosphor-react';
 import * as Dialog from '@radix-ui/react-dialog';
+import * as Checkbox from '@radix-ui/react-checkbox';
+import * as ToggleGroup from '@radix-ui/react-toggle-group';
+
 import { Input } from './Form/Input';
 
+interface CreateAdModalProps {
+  games: {
+    id: string;
+    title: string;
+  }[];
+}
 
-export function CreateAdModal () {
+export function CreateAdModal ({ games }: CreateAdModalProps) {
   return (
     <Dialog.Portal>
       <Dialog.Overlay className="bg-black/60 inset-0 fixed" />
@@ -12,11 +21,13 @@ export function CreateAdModal () {
         <form className="mt-8 flex flex-col gap-4">
           <div className="flex flex-col gap-2">
             <label htmlFor="game" className="font-semibold">What's the game?</label>
-            <Input 
+            <select 
               id="game"
-              placeholder="Select the game you wanna play"
-              className="bg-zinc-900 px-4 py-3 rounded text-sm placeholder:text-zinc-500"
-            />
+              className="bg-zinc-900 px-4 py-3 rounded text-sm placeholder:text-zinc-500 appearance-none"
+            >
+              <option disabled selected value="">Select the game you wanna play</option>
+              { games.map(game => <option key={game.id} value={game.id}>{game.title}</option>)}
+            </select>
           </div>
 
           <div className="flex flex-col gap-2">
@@ -38,15 +49,15 @@ export function CreateAdModal () {
           <div className="flex flex-6 gap-6">
             <div className="flex flex-col gap-2">
               <label htmlFor="weekDays" className="font-semibold">When do you usually play?</label>
-              <div className="grid grid-cols-5 gap-2">
-                <button title="Sunday" className="w-10 h-10 rounded bg-zinc-900 font-semibold">S</button>
-                <button title="Monday" className="w-10 h-10 rounded bg-zinc-900 font-semibold">M</button>
-                <button title="Tuesday" className="w-10 h-10 rounded bg-zinc-900 font-semibold">T</button>
-                <button title="Wednesday" className="w-10 h-10 rounded bg-zinc-900 font-semibold">W</button>
-                <button title="Thursday" className="w-10 h-10 rounded bg-zinc-900 font-semibold">T</button>
-                <button title="Friday" className="w-10 h-10 rounded bg-zinc-900 font-semibold">F</button>
-                <button title="Saturday" className="w-10 h-10 rounded bg-zinc-900 font-semibold">S</button>
-              </div>
+              <ToggleGroup.Root type="multiple" className="grid grid-cols-5 gap-2">
+                <ToggleGroup.Item value="0" title="Sunday" className="toggle-on:bg-violet-500 toggle-off:bg-zinc-900 font-semibold w-10 h-10 rounded">S</ToggleGroup.Item>
+                <ToggleGroup.Item value="1" title="Monday" className="toggle-on:bg-violet-500 toggle-off:bg-zinc-900 font-semibold w-10 h-10 rounded">M</ToggleGroup.Item>
+                <ToggleGroup.Item value="2" title="Tuesday" className="toggle-on:bg-violet-500 toggle-off:bg-zinc-900 font-semibold w-10 h-10 rounded">T</ToggleGroup.Item>
+                <ToggleGroup.Item value="3" title="Wednesday" className="toggle-on:bg-violet-500 toggle-off:bg-zinc-900 font-semibold w-10 h-10 rounded">W</ToggleGroup.Item>
+                <ToggleGroup.Item value="4" title="Thursday" className="toggle-on:bg-violet-500 toggle-off:bg-zinc-900 font-semibold w-10 h-10 rounded">T</ToggleGroup.Item>
+                <ToggleGroup.Item value="5" title="Friday" className="toggle-on:bg-violet-500 toggle-off:bg-zinc-900 font-semibold w-10 h-10 rounded">F</ToggleGroup.Item>
+                <ToggleGroup.Item value="6" title="Saturday" className="toggle-on:bg-violet-500 toggle-off:bg-zinc-900 font-semibold w-10 h-10 rounded">S</ToggleGroup.Item>
+              </ToggleGroup.Root>
             </div>
             <div className="flex-1 flex flex-col gap-2">
               <label htmlFor="hourStart" className="font-semibold">Which time of the day?</label>
@@ -57,8 +68,13 @@ export function CreateAdModal () {
             </div>
           </div>
 
-          <div className="mt-2 flex gap-2 text-sm">
-            <Input type="checkbox" />I do connect to voice channel
+          <div className="mt-2 flex items-center gap-2 text-sm">
+            <Checkbox.Root className="bg-zinc-900 w-6 h-6 p-1 rounded">
+              <Checkbox.Indicator className="w-4 h-4 text-emerald-400">
+                <Check />
+              </Checkbox.Indicator>
+            </Checkbox.Root>
+            I'd like to connect to voice channel
           </div>
 
           <footer className="mt-4 flex gap-4 justify-end">
